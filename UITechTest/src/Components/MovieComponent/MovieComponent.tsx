@@ -48,7 +48,7 @@ const MovieComponent: React.FC = () => {
     "Avg. Review Score",
     "Production Company",
   ];
-  const tableRows: any[][] = movies.map((movie) => [
+  const tableRows: any[] = movies.map((movie) => [
     movie.title,
     calculateAverageScore(movie.reviews),
     getCompanyById(movie.filmCompanyId),
