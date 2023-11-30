@@ -1,0 +1,21 @@
+.ModalContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 20px;
+    outline: none;
+    border: none;
+  }
+  
+  .ModalContainer .MuiPaper-root {
+    max-height: 70%;
+    width: 80%;
+    margin: auto;
+  }
+  
+  .ModalContainer h3,
+  .ModalContainer label {
+    color: white;
+  }
+  
