@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomButton from "../Button/CustomButton";
 import { ReviewFormProps } from "./ReviewForm.types";
 import styles from "./ReviewForm.module.css";
@@ -11,6 +11,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
 }) => {
   const [review, setReview] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
 
   const handleReviewChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -29,12 +31,21 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     if (review.length > 0 && review.length <= 100) {
       onSubmitReview(review);
       setReview("");
+      setSubmitted(true);
+
     }
   };
 
+  useEffect(() => {
+    if (selectedRow !== null) {
+      setSubmitted(false);
+
+    }
+  }, [selectedRow]);
+
   return (
     <div>
-      {selectedRow !== null && (
+      {selectedRow !== null && !submitted && (
         <div>
           <h3>
             Leave a Review for{" "}
