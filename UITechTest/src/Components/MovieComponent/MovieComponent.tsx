@@ -56,7 +56,7 @@ const MovieComponent: React.FC = () => {
   ]);
 
   return (
-    <div className={styles.container}>
+    <div>
       <CustomButton buttonTitle="Refresh The List" />
       <Title title="Movie Information" />
       <MovieCounter moviesLength={movies.length} />
