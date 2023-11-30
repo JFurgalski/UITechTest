@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import ReviewForm from "../ReviewForm/ReviewForm";
-import styles from "./ReviewModal.module.css"
+import styles from "./ReviewModal.module.css";
+import { ReviewFormProps } from "../ReviewForm/ReviewForm.types";
 
-interface ReviewModalProps {
-  onSubmitReview: (review: string) => void;
-  selectedRow: number | null;
-  rows: any[][];
-}
-
-const ReviewModal: React.FC<ReviewModalProps> = ({
+const ReviewModal: React.FC<ReviewFormProps> = ({
   onSubmitReview,
   selectedRow,
   rows,
@@ -34,7 +29,11 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   };
 
   return (
-    <Modal className={styles.ModalContainer} open={showModal} onClose={handleModalClose}>
+    <Modal
+      className={styles.ModalContainer}
+      open={showModal}
+      onClose={handleModalClose}
+    >
       <div>
         {selectedRow !== null && (
           <ReviewForm

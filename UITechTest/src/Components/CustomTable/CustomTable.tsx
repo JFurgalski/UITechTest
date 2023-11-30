@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import ReviewModal from "../ReviewModal/ReviewModal";
 import { useMediaQuery } from "@mui/material";
 import ReviewForm from "../ReviewForm/ReviewForm";
-import { CustomTableProps } from "./CustomTable.types";
+import { CustomTableProps, TableRowData } from "./CustomTable.types";
 
 const ColourPallete = {
   lightBlue: "#77B6DF",
@@ -121,15 +121,17 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedRows.map((row, rowIndex) => (
+            {sortedRows.map((row: TableRowData, rowIndex: number) => (
               <StyledTableRow
                 key={rowIndex}
                 onClick={() => setSelectedRow(rowIndex)}
                 selected={selectedRow === rowIndex}
               >
-                {row.map((cell, cellIndex) => (
+                {Object.entries(row).map(([key, cell], cellIndex) => (
                   <StyledTableCell key={cellIndex} align="left">
-                    {cellIndex === 2 ? getCompanyById(cell) : cell}
+                    {key === "filmCompanyId"
+                      ? getCompanyById(cell as string)
+                      : cell}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
