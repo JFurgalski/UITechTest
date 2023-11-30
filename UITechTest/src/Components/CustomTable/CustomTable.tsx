@@ -44,9 +44,18 @@ const StyledTableRow = styled(TableRow, {
   },
 }));
 
+enum SortDirection {
+  ASC = 1,
+  DESC = -1,
+}
+
 const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const [sortDirection, setSortDirection] = React.useState<SortDirection>(
+    SortDirection.ASC
+  );
+  const [sortedRows, setSortedRows] = React.useState<any[]>(rows);
 
   const handleRowClick = (index: number) => {
     setSelectedRow(index === selectedRow ? null : index);
@@ -73,6 +82,22 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
       });
   };
 
+  const handleSort = () => {
+    const newDirection =
+      sortDirection === SortDirection.ASC
+        ? SortDirection.DESC
+        : SortDirection.ASC;
+
+    const sorted = [...sortedRows].sort((a, b) => {
+      const scoreA = parseFloat(a[1]);
+      const scoreB = parseFloat(b[1]);
+      return (scoreA - scoreB) * newDirection;
+    });
+
+    setSortDirection(newDirection);
+    setSortedRows(sorted);
+  };
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -80,15 +105,26 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
           <TableHead>
             <TableRow>
               {headers.map((header, index) => (
-                <StyledTableCell key={index}>{header}</StyledTableCell>
+                <StyledTableCell key={index}>
+                  {index === 1 ? (
+                    <>
+                      {header}
+                      <button onClick={handleSort} type="button">
+                        {sortDirection === SortDirection.ASC ? "↑" : "↓"}
+                      </button>
+                    </>
+                  ) : (
+                    header
+                  )}
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, rowIndex) => (
+            {sortedRows.map((row, rowIndex) => (
               <StyledTableRow
                 key={rowIndex}
-                onClick={() => handleRowClick(rowIndex)}
+                onClick={() => setSelectedRow(rowIndex)}
                 selected={selectedRow === rowIndex}
               >
                 {row.map((cell, cellIndex) => (
