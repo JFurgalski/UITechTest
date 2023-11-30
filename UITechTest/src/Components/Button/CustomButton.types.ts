@@ -14,4 +14,5 @@ export interface CustomButtonProps {
   type?: ButtonType;
   variant?: buttonVariant;
   color?: buttonColor;
+  onChange?: () => void;
 }

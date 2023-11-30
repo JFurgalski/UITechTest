@@ -7,9 +7,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   type = "button",
   variant = "contained",
   color = "primary",
+  onChange,
 }) => {
   return (
-    <Button color={color} type={type} variant={variant}>
+    <Button onClick={onChange} color={color} type={type} variant={variant}>
       {buttonTitle}
     </Button>
   );
