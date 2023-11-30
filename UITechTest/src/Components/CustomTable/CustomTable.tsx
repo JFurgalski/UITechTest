@@ -7,14 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
-import styles from './TableComponent.module.css'
-
-
-interface CustomTableProps {
-  headers: string[];
-  rows: any[][];
-}
+import ReviewModal from "../ReviewModal/ReviewModal";
+import { useMediaQuery } from "@mui/material";
+import ReviewForm from "../ReviewForm/ReviewForm";
+import { CustomTableProps } from "./CustomTable.types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,23 +23,24 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow, {
-    shouldForwardProp: (prop) => prop !== "selected",
-  })<{ selected: boolean }>(({ theme, selected }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-    cursor: "pointer",
-    backgroundColor: selected ? "#e0e0e0" : "inherit",
-    "&:hover": {
-      backgroundColor: selected ? "#e0e0e0" : theme.palette.action.hover,
-    },
-  }));
+  shouldForwardProp: (prop) => prop !== "selected",
+})<{ selected: boolean }>(({ theme, selected }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: selected ? "#77B6DF" : theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+  cursor: "pointer",
+  backgroundColor: selected ? "#77B6DF" : "inherit",
+  "&:hover": {
+    backgroundColor: selected ? "#77B6DF" : "#77B6DF",
+  },
+}));
 
 const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
-  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
   const handleRowClick = (index: number) => {
     setSelectedRow(index === selectedRow ? null : index);
@@ -53,24 +50,21 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
     return companyId;
   };
 
-  const renderReviewForm = () => {
-    if (selectedRow !== null) {
-      const selectedMovie = rows[selectedRow];
-      return (
-        <div>
-          <h3>Leave a Review for {selectedMovie[0]}</h3>
-          <form>
-            <label>
-              Review:
-              <textarea rows={4} cols={50} />
-            </label>
-            <br />
-            <input type="submit" value="Submit Review" />
-          </form>
-        </div>
-      );
-    }
-    return null;
+  const submitReview = (review: string) => {
+    fetch("http://localhost:3000/submitReview", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ review }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -101,7 +95,23 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      {renderReviewForm()}
+      {selectedRow !== null && (
+        <>
+          {isSmallScreen ? (
+            <ReviewModal
+              onSubmitReview={submitReview}
+              selectedRow={selectedRow}
+              rows={rows}
+            />
+          ) : (
+            <ReviewForm
+              onSubmitReview={submitReview}
+              selectedRow={selectedRow}
+              rows={rows}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };
