@@ -12,6 +12,10 @@ import { useMediaQuery } from "@mui/material";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import { CustomTableProps } from "./CustomTable.types";
 
+const ColourPallete = {
+  lightBlue: "#77B6DF",
+};
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -26,15 +30,17 @@ const StyledTableRow = styled(TableRow, {
   shouldForwardProp: (prop) => prop !== "selected",
 })<{ selected: boolean }>(({ theme, selected }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: selected ? "#77B6DF" : theme.palette.action.hover,
+    backgroundColor: selected
+      ? ColourPallete.lightBlue
+      : theme.palette.action.hover,
   },
   "&:last-child td, &:last-child th": {
     border: 0,
   },
   cursor: "pointer",
-  backgroundColor: selected ? "#77B6DF" : "inherit",
+  backgroundColor: selected ? ColourPallete.lightBlue : "inherit",
   "&:hover": {
-    backgroundColor: selected ? "#77B6DF" : "#77B6DF",
+    backgroundColor: ColourPallete.lightBlue,
   },
 }));
 
@@ -60,7 +66,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.message);
+        alert(data.message);
       })
       .catch((error) => {
         console.error("Error:", error);
