@@ -3,7 +3,6 @@ import useMovieCompanies from "../../Hooks/useMovieCompanies";
 import useMovies from "../../Hooks/useMovies";
 import Title from "../Title/Title";
 import CustomTable from "../CustomTable/CustomTable";
-import styles from "./MovieComponent.module.css";
 import MovieCounter from "../MovieCounter/MovieCounter";
 import CustomButton from "../Button/CustomButton";
 

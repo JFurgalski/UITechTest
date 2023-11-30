@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import CustomButton from "../Button/CustomButton";
 import { ReviewFormProps } from "./ReviewForm.types";
+import styles from "./ReviewForm.module.css";
 
 const ReviewForm: React.FC<ReviewFormProps> = ({
   onSubmitReview,
@@ -35,18 +36,21 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     <div>
       {selectedRow !== null && (
         <div>
-          <h3>Leave a Review for {rows[selectedRow][0]}</h3>
+          <h3>
+            Leave a Review for{" "}
+            <span className={styles.movieTitle}>{rows[selectedRow][0]}</span>
+          </h3>
           <form onSubmit={handleSubmit}>
-          <label htmlFor="reviewTextArea">
+            <label htmlFor="reviewTextArea">
               Review (100 character limit):
             </label>
             <br />
-              <textarea
-                rows={4}
-                cols={50}
-                value={review}
-                onChange={handleReviewChange}
-              />
+            <textarea
+              rows={4}
+              cols={50}
+              value={review}
+              onChange={handleReviewChange}
+            />
             {errorMessage && <p>{errorMessage}</p>}
             <br />
             <CustomButton type="submit" buttonTitle="Submit Review" />
