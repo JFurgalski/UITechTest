@@ -38,7 +38,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <h3>Leave a Review for {rows[selectedRow][0]}</h3>
           <form onSubmit={handleSubmit}>
             <label>
-              Review (100 characters max):{" "}
+              Review (100 character limit):{" "}
               <textarea
                 rows={4}
                 cols={50}
