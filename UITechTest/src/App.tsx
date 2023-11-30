@@ -1,7 +1,4 @@
-import { useRef, useState, Children } from "react";
-import { easeIn, easeOut } from "polished";
-import { useBoolean } from "react-use";
-import { createReducer } from "@reduxjs/toolkit";
+import { useRef } from "react";
 import MovieComponent from "./Components/MovieComponent/MovieComponent";
 import Title from "./Components/Title/Title";
 
@@ -29,7 +26,6 @@ const mockMovieData: any = [
 ];
 
 export const App = () => {
-  const movieLength = useRef(mockMovieData.length);
 
   const refreshButton = (buttonText: any) => {
     if (mockMovieCompanyData) {
@@ -43,7 +39,6 @@ export const App = () => {
     <div>
       <Title title="Welcome to Movie database!" />
       {refreshButton("Refresh")}
-      <p>Total movies displayed {movieLength.current}</p>
       <div>
         <MovieComponent />
       </div>
