@@ -12,3 +12,5 @@ export interface CustomTableProps {
   headers: string[];
   rows: TableRowData[];
 }
+
+export interface TableRowData extends Array<string | number> {}
