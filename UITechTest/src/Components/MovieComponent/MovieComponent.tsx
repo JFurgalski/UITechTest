@@ -5,14 +5,26 @@ import Title from "../Title/Title";
 import CustomTable from "../CustomTable/CustomTable";
 import styles from "./MovieComponent.module.css";
 import MovieCounter from "../MovieCounter/MovieCounter";
+import CustomButton from "../Button/CustomButton";
 
 const MovieComponent: React.FC = () => {
   const {
     movieCompanies,
     loading: companiesLoading,
     error: companiesError,
+    refetch: refetchCompanies,
   } = useMovieCompanies();
-  const { movies, loading: moviesLoading, error: moviesError } = useMovies();
+  const {
+    movies,
+    loading: moviesLoading,
+    error: moviesError,
+    refetch: refetchMovies,
+  } = useMovies();
+
+  const handleRefresh = () => {
+    refetchCompanies();
+    refetchMovies();
+  };
 
   if (companiesLoading || moviesLoading) {
     return <div>Loading...</div>;
@@ -45,6 +57,7 @@ const MovieComponent: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <CustomButton buttonTitle="Refresh The List" />
       <Title title="Movie Information" />
       <MovieCounter moviesLength={movies.length} />
       <CustomTable headers={headers} rows={tableRows} />

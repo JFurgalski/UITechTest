@@ -9,42 +9,49 @@ interface Movie {
   releaseYear: number;
 }
 
-const useMovies = (): {
+interface MoviesResponse {
   movies: Movie[];
   loading: boolean;
   error: string | null;
-} => {
+  refetch: () => void;
+}
+
+const useMovies = (): MoviesResponse => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const maxRetries = 3;
 
-  useEffect(() => {
+  const fetchMovies = async (): Promise<void> => {
+    setLoading(true);
     let retries = 0;
-
-    const fetchMovies = async (): Promise<void> => {
-      while (retries < maxRetries) {
-        try {
-          const response = await fetch("http://localhost:3000/movies");
-          if (!response.ok) {
-            throw new Error("Failed to fetch movies");
-          }
-          const data: Movie[] = await response.json();
-          setMovies(data);
-          setLoading(false);
-          return;
-        } catch (error: any) {
-          setError(error.message || "An error occurred");
-          retries++;
+    while (retries < maxRetries) {
+      try {
+        const response = await fetch("http://localhost:3000/movies");
+        if (!response.ok) {
+          throw new Error("Failed to fetch movies");
         }
+        const data: Movie[] = await response.json();
+        setMovies(data);
+        setLoading(false);
+        return;
+      } catch (error: any) {
+        setError(error.message || "An error occurred");
+        retries++;
       }
-      setLoading(false);
-    };
+    }
+    setLoading(false);
+  };
 
+  useEffect(() => {
     fetchMovies();
   }, []);
 
-  return { movies, loading, error };
+  const refetch = () => {
+    fetchMovies();
+  };
+
+  return { movies, loading, error, refetch };
 };
 
 export default useMovies;
