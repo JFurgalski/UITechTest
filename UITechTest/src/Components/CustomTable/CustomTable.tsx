@@ -10,7 +10,12 @@ import Paper from "@mui/material/Paper";
 import ReviewModal from "../ReviewModal/ReviewModal";
 import { useMediaQuery } from "@mui/material";
 import ReviewForm from "../ReviewForm/ReviewForm";
-import { CustomTableProps, TableRowData } from "./CustomTable.types";
+import {
+  CustomTableProps,
+  ReviewResponse,
+  TableRowData,
+} from "./CustomTable.types";
+import useSubmitReview from "../../Hooks/useSubmit";
 
 const ColourPallete = {
   lightBlue: "#77B6DF",
@@ -52,34 +57,17 @@ enum SortDirection {
 const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const { error, submitReview } = useSubmitReview(
+    "http://localhost:3000/submitReview"
+  );
+
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(
     SortDirection.ASC
   );
-  const [sortedRows, setSortedRows] = React.useState<any[]>(rows);
-
-  const handleRowClick = (index: number) => {
-    setSelectedRow(index === selectedRow ? null : index);
-  };
+  const [sortedRows, setSortedRows] = React.useState<TableRowData[]>(rows);
 
   const getCompanyById = (companyId: string) => {
     return companyId;
-  };
-
-  const submitReview = (review: string) => {
-    fetch("http://localhost:3000/submitReview", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ review }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(data.message);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   const handleSort = () => {
@@ -89,13 +77,22 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
         : SortDirection.ASC;
 
     const sorted = [...sortedRows].sort((a, b) => {
-      const scoreA = parseFloat(a[1]);
-      const scoreB = parseFloat(b[1]);
+      const scoreA = parseFloat(String(a[1]));
+      const scoreB = parseFloat(String(b[1]));
       return (scoreA - scoreB) * newDirection;
     });
-
     setSortDirection(newDirection);
     setSortedRows(sorted);
+  };
+
+  const handleReviewSubmission = (review: string) => {
+    submitReview(review, (data: ReviewResponse | null) => {
+      if (data && data.message) {
+        alert(data.message);
+      } else {
+        alert(error);
+      }
+    });
   };
 
   return (
@@ -143,13 +140,13 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
         <>
           {isSmallScreen ? (
             <ReviewModal
-              onSubmitReview={submitReview}
+              onSubmitReview={handleReviewSubmission}
               selectedRow={selectedRow}
               rows={rows}
             />
           ) : (
             <ReviewForm
-              onSubmitReview={submitReview}
+              onSubmitReview={handleReviewSubmission}
               selectedRow={selectedRow}
               rows={rows}
             />
