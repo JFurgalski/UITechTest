@@ -5,7 +5,7 @@
   font-weight: 400;
   width: 100vw;
   background-color: aliceblue;
-  outline: none; 
+  outline: none;
 }
 
 body {
@@ -15,9 +15,5 @@ body {
 }
 
 textarea {
-  outline: none; 
-}
-
-textarea::selection {
-  background-color: transparent;
+  outline: none;
 }

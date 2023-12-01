@@ -13,4 +13,8 @@ export interface CustomTableProps {
   rows: TableRowData[];
 }
 
+export interface ReviewResponse {
+  message: string;
+}
+
 export interface TableRowData extends Array<string | number> {}
