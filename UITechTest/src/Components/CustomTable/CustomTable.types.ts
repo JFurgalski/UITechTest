@@ -1,20 +1,14 @@
-export interface TableRowData {
-  id: string;
-  reviews: number[];
-  title: string;
-  filmCompanyId: string;
-  cost: number;
-  releaseYear: number;
-  companyName: string;
-}
-
 export interface CustomTableProps {
   headers: string[];
-  rows: TableRowData[];
+  rows: MovieSummary[];
+}
+
+export interface MovieSummary {
+  title: string;
+  averageScore: string;
+  companyName: string;
 }
 
 export interface ReviewResponse {
   message: string;
 }
-
-export interface TableRowData extends Array<string | number> {}
