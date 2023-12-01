@@ -12,8 +12,8 @@ import { useMediaQuery } from "@mui/material";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import {
   CustomTableProps,
+  MovieSummary,
   ReviewResponse,
-  TableRowData,
 } from "./CustomTable.types";
 import useSubmitReview from "../../Hooks/useSubmit";
 
@@ -64,7 +64,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(
     SortDirection.ASC
   );
-  const [sortedRows, setSortedRows] = React.useState<TableRowData[]>(rows);
+  const [sortedRows, setSortedRows] = React.useState<MovieSummary[]>(rows);
 
   const getCompanyById = (companyId: string) => {
     return companyId;
@@ -77,8 +77,8 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
         : SortDirection.ASC;
 
     const sorted = [...sortedRows].sort((a, b) => {
-      const scoreA = parseFloat(String(a[1]));
-      const scoreB = parseFloat(String(b[1]));
+      const scoreA = parseFloat(String(a.averageScore));
+      const scoreB = parseFloat(String(b.averageScore));
       return (scoreA - scoreB) * newDirection;
     });
     setSortDirection(newDirection);
@@ -118,7 +118,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ headers, rows }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedRows.map((row: TableRowData, rowIndex: number) => (
+            {sortedRows.map((row: MovieSummary, rowIndex: number) => (
               <StyledTableRow
                 key={rowIndex}
                 onClick={() => setSelectedRow(rowIndex)}

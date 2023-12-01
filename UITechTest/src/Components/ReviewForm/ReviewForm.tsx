@@ -48,7 +48,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         <div>
           <h3>
             Leave a Review for{" "}
-            <span className={styles.movieTitle}>{rows[selectedRow][0]}</span>
+            <span className={styles.movieTitle}>{rows[selectedRow].title}</span>
           </h3>
           <form onSubmit={handleSubmit}>
             <label htmlFor="reviewTextArea">

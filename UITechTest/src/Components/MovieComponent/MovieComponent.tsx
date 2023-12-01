@@ -5,6 +5,7 @@ import Title from "../Title/Title";
 import CustomTable from "../CustomTable/CustomTable";
 import MovieCounter from "../MovieCounter/MovieCounter";
 import CustomButton from "../Button/CustomButton";
+import { MovieSummary } from "../CustomTable/CustomTable.types";
 
 const MovieComponent: React.FC = () => {
   const {
@@ -48,11 +49,12 @@ const MovieComponent: React.FC = () => {
     "Avg. Review Score",
     "Production Company",
   ];
-  const tableRows: any[] = movies.map((movie) => [
-    movie.title,
-    calculateAverageScore(movie.reviews),
-    getCompanyById(movie.filmCompanyId),
-  ]);
+
+  const tableRows: MovieSummary[] = movies.map((movie) => ({
+    title: movie.title,
+    averageScore: calculateAverageScore(movie.reviews),
+    companyName: getCompanyById(movie.filmCompanyId),
+  }));
 
   return (
     <div>
