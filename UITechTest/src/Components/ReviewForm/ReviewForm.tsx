@@ -13,7 +13,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-
   const handleReviewChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -22,24 +21,24 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       setReview(text);
       setErrorMessage("");
     } else {
-      setErrorMessage("Review must be 100 characters or fewer.");
+      setReview(text);
     }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (review.length > 0 && review.length <= 100) {
+    if (review.length > 100) {
+      setErrorMessage("Review must be 100 characters or fewer.");
+    } else if (review.length > 0) {
       onSubmitReview(review);
       setReview("");
       setSubmitted(true);
-
     }
   };
 
   useEffect(() => {
     if (selectedRow !== null) {
       setSubmitted(false);
-
     }
   }, [selectedRow]);
 
@@ -62,7 +61,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               value={review}
               onChange={handleReviewChange}
             />
-            {errorMessage && <p>{errorMessage}</p>}
+            {errorMessage && (
+              <p className={styles.errorMessage}>{errorMessage}</p>
+            )}
             <br />
             <CustomButton type="submit" buttonTitle="Submit Review" />
           </form>
