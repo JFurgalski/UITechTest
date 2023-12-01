@@ -56,7 +56,11 @@ const MovieComponent: React.FC = () => {
 
   return (
     <div>
-      <CustomButton onChange={handleRefresh} buttonTitle="Refresh The List" />
+      <CustomButton
+        variant="outlined"
+        onChange={handleRefresh}
+        buttonTitle="Refresh The List"
+      />
       <Title title="Movie Information" />
       <MovieCounter moviesLength={movies.length} />
       <CustomTable headers={headers} rows={tableRows} />
