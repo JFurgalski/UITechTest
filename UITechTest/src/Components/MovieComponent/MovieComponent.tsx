@@ -4,7 +4,7 @@ import useMovies from "../../Hooks/useMovies";
 import Title from "../Title/Title";
 import CustomTable from "../CustomTable/CustomTable";
 import MovieCounter from "../MovieCounter/MovieCounter";
-import CustomButton from "../Button/CustomButton";
+import CustomButton from "../CustomButton/CustomButton";
 import { MovieSummary } from "../CustomTable/CustomTable.types";
 
 const MovieComponent: React.FC = () => {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import CustomButton from "../Button/CustomButton";
+import CustomButton from "../CustomButton/CustomButton";
 import { ReviewFormProps } from "./ReviewForm.types";
 import styles from "./ReviewForm.module.css";
 
