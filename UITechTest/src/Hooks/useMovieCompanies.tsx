@@ -21,6 +21,8 @@ const useMovieCompanies = (): MovieCompaniesResponse => {
   const fetchMovieCompanies = async (): Promise<void> => {
     setLoading(true);
     let retries = 0;
+    const maxDelay = 3000;
+
     while (retries < maxRetries) {
       try {
         const response = await fetch("http://localhost:3000/movieCompanies");
@@ -34,6 +36,10 @@ const useMovieCompanies = (): MovieCompaniesResponse => {
       } catch (error: any) {
         setError(error.message || "An error occurred");
         retries++;
+        const delay = Math.pow(2, retries) * 100;
+        await new Promise((resolve) =>
+          setTimeout(resolve, Math.min(delay, maxDelay))
+        );
       }
     }
     setLoading(false);
